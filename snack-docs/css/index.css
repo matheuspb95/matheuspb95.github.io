@@ -9,6 +9,13 @@ body{
     padding: 5px;
 }
 
+.container2{
+    margin: 5%;
+    background-color: #ffffff;
+    width: 75%;
+    padding: 5px;
+}
+
 .container h1{
     text-align: center;
 }
