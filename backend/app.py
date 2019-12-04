@@ -1,7 +1,9 @@
 from flask import Flask, jsonify, make_response, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail, Message
+from flask_cors import CORS
 import jwt
+import time
 from itsdangerous import URLSafeSerializer,URLSafeTimedSerializer
 
 from models import Usuario, Produto
@@ -12,6 +14,7 @@ app.config['SECURITY_PASSWORD_SALT'] = 'my_precious_two'
 app.config.from_pyfile('config.cfg')
 db = SQLAlchemy(app)
 mail = Mail(app)
+CORS(app)
 
 @app.route('/usuarios', methods=['GET'])
 def home():
@@ -33,8 +36,9 @@ def home():
 @app.route('/usuario', methods=['POST'])
 def register():
     data = request.get_json()
+    print(data)
     new_user = Usuario(
-        id=data['id'],
+        id=int(time.time()),
         senha=data['senha'],
         nome=data['nome'],
         email=data['email'],
@@ -48,7 +52,6 @@ def register():
     link = url_for('confirm_email',token=token_user, _external=True)
     print(link)
     msg.body = body + '\n {}'.format(link)
-    print(mail.send(msg))
 
     try:
         db.session.add(new_user)
@@ -72,7 +75,7 @@ def login():
     if(user is None):
         return make_response('Usuario nao encontrado', 401)
 
-    if (not user.confirmed):
+    if (not user.confirmado):
         return make_response('Usuario nao confirmado', 401)
 
     if(not user.senha == auth.password):
@@ -83,6 +86,7 @@ def login():
 @app.route('/confirm_email/<token>')
 def confirm_email(token):
     decode = jwt.decode(token, 'snack')
+    print("decode: ", decode)
     user = Usuario.query.get(decode['user_id'])
 
     if(user is None):

@@ -12,26 +12,13 @@ import AttachMoneyRoundedIcon from '@material-ui/icons/AttachMoneyRounded';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { ThemeProvider } from '@material-ui/styles';
-
-import { createMuiTheme } from '@material-ui/core/styles';
-import lightBlue from '@material-ui/core/colors/lightBlue';
-
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#9ccc65',
-    },
-    secondary: lightBlue,
-  },
-});
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+        SNACK
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -59,11 +46,30 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+
+
 export default function SignIn() {
   const classes = useStyles();
   var email, password;
+
+  function login(){
+    fetch('http://0.0.0.0:8000/login', {
+      method : 'GET',
+      headers : new Headers({
+        'Authorization': 'Basic '+btoa(email+':'+password),
+      })
+        }).then(function(res){
+        console.log(this);
+        if(res.ok){
+          this.props.history.push("/home");                      
+        }else{
+          res.text((t) => {
+            console.log(t);
+          })
+        }
+    }.bind(this))
+  }
   return (
-    <ThemeProvider theme={theme}>
 
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -86,7 +92,7 @@ export default function SignIn() {
             autoComplete="email"
             autoFocus
             onChange = {(text) => {
-              email = text;
+              email = text.target.value;
             }}
           />
           <TextField
@@ -99,13 +105,20 @@ export default function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
+            onChange = {(text) => {
+              password = text.target.value;
+            }}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           />
           <Button
-            type="submit"
+            onClick = {
+              () => {
+                login();
+              }
+            }
             fullWidth
             variant="contained"
             color="primary"
@@ -120,7 +133,7 @@ export default function SignIn() {
               </Link>
             </Grid>
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="/#/register" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
@@ -131,6 +144,5 @@ export default function SignIn() {
         <Copyright />
       </Box>
     </Container>
-    </ThemeProvider>
   );
 }
