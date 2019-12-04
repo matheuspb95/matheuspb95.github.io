@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 import './index.css';
-import ShoppingList from './ShoppingList';
+import SignIn from './SignIn';
 
 React.createElement('div', {className: 'shopping-list'},
     React.createElement('h1',),
@@ -9,4 +9,4 @@ React.createElement('div', {className: 'shopping-list'},
 );
 
 
-ReactDom.render(<ShoppingList/>, document.getElementById('root'));
+ReactDom.render(<SignIn/>, document.getElementById('root'));
