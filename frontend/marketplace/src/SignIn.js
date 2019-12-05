@@ -13,6 +13,13 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
+
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -52,22 +59,36 @@ export default function SignIn() {
   const classes = useStyles();
   var email, password;
 
+  const [open, setOpen] = React.useState(false);
+  var erroMsg = 'Error';
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   function login(){
+    console.log("Email: " + email + " senha: " + password);
     fetch('http://0.0.0.0:8000/login', {
       method : 'GET',
       headers : new Headers({
         'Authorization': 'Basic '+btoa(email+':'+password),
       })
         }).then(function(res){
-        console.log(this);
         if(res.ok){
-          this.props.history.push("/home");                      
+          window.open('http://localhost:3000/#/home', '_self');          
         }else{
-          res.text((t) => {
-            console.log(t);
-          })
+          console.log(res);
+          erroMsg = res;
+          handleClickOpen();
         }
-    }.bind(this))
+    }.bind(this)).catch(function(e){
+      console.log(e);
+      erroMsg = e;
+      handleClickOpen();
+    })
   }
   return (
 
@@ -143,6 +164,26 @@ export default function SignIn() {
       <Box mt={8}>
         <Copyright />
       </Box>
+
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Erro no login"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {erroMsg}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary" autoFocus>
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+
     </Container>
   );
 }
