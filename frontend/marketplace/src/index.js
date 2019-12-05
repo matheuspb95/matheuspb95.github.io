@@ -5,7 +5,9 @@ import { HashRouter, Route, Switch } from "react-router-dom";
 import './index.css';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
-import Album from './Album';
+import Home from './Home';
+import Produtos from './Produtos';
+import NovoProduto from './NovoProduto';
 
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -16,7 +18,9 @@ var hist = createBrowserHistory();
 var indexRoutes = [
     { path: "/login", name: "SignIn", component: SignIn },
     { path: "/register", name: "SignUp", component: SignUp },
-    { path: "/home", name: "Home", component: Album },
+    { path: "/home", name: "Home", component: Home },
+    { path: "/produtos", name: "Produtos", component: Produtos },
+    { path: "/novoproduto", name: "AddProduto", component: NovoProduto },
     { path: "/", name: "SignIn", component: SignIn },
 ];
 

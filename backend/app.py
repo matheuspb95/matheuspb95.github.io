@@ -107,6 +107,8 @@ def produtos():
             'foto': produto.foto,
             'titulo': produto.titulo,
             'preco': produto.preco,
+            'qtd':produto.qtd,
+            'vendedor':Usuario.query.get(produto.vendedor).nome
         }
         output.append(prod)
     return (jsonify(output))
@@ -115,11 +117,13 @@ def produtos():
 def register_produto():
     data = request.get_json()
     new_prod = Produto(
-        id=data['id'],
+        id=int(time.time()),
         descricao=data['descricao'],
         foto=data['foto'],
         titulo=data['titulo'],
-        preco=data['preco']
+        preco=data['preco'],
+        vendedor=data['vendedor'],
+        qtd=0
     )
     try:
         db.session.add(new_prod)

@@ -29,6 +29,9 @@ class Produto(db.Model):
     titulo = db.Column(db.String(200))
     foto = db.Column(db.String(200))
     preco = db.Column(db.Float())
+    qtd = db.Column(db.Integer())
+    vendedor = db.Column(db.Integer,db.ForeignKey('snack_usuario.id'))
+    
 
     def to_json(self):
         return dict(
