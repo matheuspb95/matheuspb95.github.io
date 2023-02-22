@@ -25,17 +25,17 @@ form {
 /* The snackbar - position it at the bottom and in the middle of the screen */
 #snackbar {
   visibility: hidden; /* Hidden by default. Visible on click */
-  min-width: 250px; /* Set a default minimum width */
-  margin-left: -125px; /* Divide value of min-width by 2 */
+  min-width: 25vw; /* Set a default minimum width */
+  margin-left: -12vw; /* Divide value of min-width by 2 */
   background-color: #333; /* Black background color */
   color: #fff; /* White text color */
   text-align: center; /* Centered text */
-  border-radius: 2px; /* Rounded borders */
-  padding: 16px; /* Padding */
+  border-radius: 0.2vh; /* Rounded borders */
+  padding: 1.6vh; /* Padding */
   position: fixed; /* Sit on top of the screen */
   z-index: 1; /* Add a z-index if needed */
   left: 50%; /* Center the snackbar */
-  bottom: 30px; /* 30px from the bottom */
+  bottom: 3vh; /* 30px from the bottom */
 }
 
 /* Show the snackbar when clicking on a button (class added with JavaScript) */
@@ -54,7 +54,7 @@ form {
     opacity: 0;
   }
   to {
-    bottom: 30px;
+    bottom: 3vh;
     opacity: 1;
   }
 }
@@ -65,14 +65,14 @@ form {
     opacity: 0;
   }
   to {
-    bottom: 30px;
+    bottom: 3vh;
     opacity: 1;
   }
 }
 
 @-webkit-keyframes fadeout {
   from {
-    bottom: 30px;
+    bottom: 3vh;
     opacity: 1;
   }
   to {
@@ -83,7 +83,7 @@ form {
 
 @keyframes fadeout {
   from {
-    bottom: 30px;
+    bottom: 3vh;
     opacity: 1;
   }
   to {
