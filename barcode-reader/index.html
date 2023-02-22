@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <video id="video" autoplay></video>
-    <!-- Dont for get to link your JavaScript -->
-    <script src="https://unpkg.com/javascript-barcode-reader"></script>
     <script src="./main.js" async></script>
-    <div>
-      <p id="results">Results:</p>
-    </div>
+    <form onsubmit="event.preventDefault();copyCode()">
+      <label for="codvalue">Código: </label><br>
+      <input disabled type="text" id="codvalue" name="codvalue"><br>
+      <input type="submit" value="Copiar Código">
+    </form>
+    <div id="snackbar"></div>
   </body>
 </html>
