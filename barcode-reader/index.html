@@ -4,6 +4,9 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
+    <div id="unsuported" hidden>
+      <p>Barcode Detector is not supported by this browser.</p>
+    </div>
     <video id="video" autoplay></video>
     <script src="./main.js" async></script>
     <form onsubmit="event.preventDefault();copyCode()">

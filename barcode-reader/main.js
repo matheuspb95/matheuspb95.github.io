@@ -20,7 +20,13 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 
 let formats;
 // Save all formats to formats var
-BarcodeDetector.getSupportedFormats().then((arr) => (formats = arr));
+if (typeof BarcodeDetector != "undefined") {
+  console.log("Barcode Detector supported!");
+} else {
+  console.log("Barcode Detector is not supported by this browser.");
+  document.getElementById("unsuported").hidden = false;
+}
+BarcodeDetector.getSupportedFormats().then((arr) => (formats = arr))
 // Create new barcode detector with all supported formats
 const barcodeDetector = new BarcodeDetector({ formats });
 // const barcodeDetector = new BarcodeDetector("itf");
@@ -58,14 +64,16 @@ function showSnackBar(textMsg) {
   x.innerHTML = textMsg;
 
   // After 3 seconds, remove the show class from DIV
-  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+  setTimeout(function () {
+    x.className = x.className.replace("show", "");
+  }, 3000);
 }
 
 const copyCode = () => {
   codeValue.select();
   codeValue.setSelectionRange(0, 99999); // For mobile devices
-  
-   // Copy the text inside the text field
+
+  // Copy the text inside the text field
   navigator.clipboard.writeText(codeValue.value);
   showSnackBar("Código copiado: " + codeValue.value);
-}
+};

@@ -17,6 +17,16 @@ form {
   padding: 2vh;
 }
 
+#unsuported {
+  position: absolute;
+  width: 100vw;
+  height: 70vh;
+}
+
+#unsuported > p {
+  text-align: center;
+}
+
 #codvalue {
   margin: 0 2vw;
   flex: auto;
