@@ -4,7 +4,7 @@
   // width to the value defined here, but the height will be
   // calculated based on the aspect ratio of the input stream.
 
-  const width = 320; // We will scale the photo width to this
+  const width = window.screen.width; // We will scale the photo width to this
   let height = 0; // This will be computed based on the input stream
 
   // |streaming| indicates whether or not we're currently streaming
@@ -19,6 +19,7 @@
   let canvas = null;
   let photo = null;
   let startbutton = null;
+  let newphotobutton = null;
 
   function showViewLiveResultButton() {
     if (window.self !== window.top) {
@@ -43,6 +44,7 @@
     canvas = document.getElementById("canvas");
     photo = document.getElementById("photo");
     startbutton = document.getElementById("startbutton");
+    newphotobutton = document.getElementById("newphotobutton");
 
     navigator.mediaDevices
       .getUserMedia({
@@ -92,6 +94,16 @@
       false
     );
 
+    newphotobutton.addEventListener(
+      "click",
+      (ev) => {
+        document.getElementById("camera").hidden = false;
+        document.getElementById("output").hidden = true;
+        ev.preventDefault();
+      },
+      false
+    );
+
     clearphoto();
   }
 
@@ -107,48 +119,57 @@
     photo.setAttribute("src", data);
   }
 
-  function urltoFile(url, filename, mimeType) {
-    return fetch(url)
-      .then(function (res) {
-        return res.arrayBuffer();
-      })
-      .then(function (buf) {
-        return new File([buf], filename, { type: mimeType });
-      });
+  function formDataOptions() {
+    var formData = new FormData();
+    // Valid values  are listed  at http://how-to.inliteresearch.com/web-api-barcode-reader/#types
+    var types = ""; // e.g. "Code39,Code128"  reads only Code39 and Code128 barcodes
+    // Optional.  Other WABR options listed at  http://how-to.inliteresearch.com/web-api-barcode-reader/#Optional-reader-parameters
+    var tbr = "";
+    var options = "";
+    var format = "";
+    if (types !== "") formData.append("types", types);
+    if (tbr !== "") formData.append("tbr", tbr);
+    if (options !== "") formData.append("options", options);
+    if (format !== "") formData.append("format", format);
+    return formData;
   }
 
   async function sendImgtoAPI(imgData) {
     result.innerHTML = "Sending code to API";
-    const res = await fetch(imgData);
-    const blob = await res.blob();
-    const formData = new FormData();
-    const file = new File([blob], "img.jpg", {
-      type: blob.type,
-    });
-    formData.append("imageFile", file, "file");
-    console.log(formData);
+    document.getElementById("camera").hidden = true;
+    document.getElementById("output").hidden = false;
+    // const res = await fetch(imgData);
+    // const blob = await res.blob();
+    // const formData = new FormData();
+    // const file = new File([blob], "img.jpg", {
+    //   type: blob.type,
+    // });
+    // formData.append("imageFile", file, "file");
+    // console.log(formData);
 
-    fetch("https://testapi.cloudmersive.com/barcode/scan/image", {
+    var formData = formDataOptions();
+    formData.append("image", imgData);
+
+    fetch("https://wabr.inliteresearch.com/barcodes", {
       headers: {
         accept: "application/json",
-        "accept-language": "en-US,en;q=0.9",
-        apikey:
-          "expkey:2kJpfx4lqVU3ZvnY/LZFxJPEO8+w1yNfOE/IXaU2SXoNJA6O0hPPwSWzVNI2UcS++JxAXt0FiljKEk0VsGzd0Fy5YHXCVBm+b+t0JvHtixH0NpW1sppAfII4b+Gt/E0g",
-        // "content-type": "multipart/form-data",
+        Authorization: "weggrjukmgh67856ushhgargagawa53",
       },
-      referrer: "https://api.cloudmersive.com/",
-      referrerPolicy: "strict-origin-when-cross-origin",
       body: formData,
       method: "POST",
       mode: "cors",
       credentials: "omit",
     })
-      .then((res) => {
-        console.log(res);
-        if (res["RawText"]) {
-          result.innerHTML = "CODE: " + res["RawText"];
+      .then((res) => res.json())
+      .then((data) => {
+        if (data["Barcodes"].length > 0) {
+          if (data["Barcodes"][0]["Text"]) {
+            result.innerHTML = "Code: " + data["Barcodes"][0]["Text"];
+          } else {
+            result.innerHTML = "No code found";
+          }
         } else {
-          result.innerHTML = "NO CODE FOUND";
+          result.innerHTML = "No code found";
         }
       })
       .catch((e) => console.log(e));
