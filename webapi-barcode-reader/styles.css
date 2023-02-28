@@ -1,16 +1,37 @@
+body {
+  margin: 0;
+}
+
+
+#panel2 {
+  background-color: #33333377;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 60vw;
+  right: 0;
+}
+
+#panel1 {
+  background-color: #33333377;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 60vw;
+}
+
 #video {
-  background: greenyellow; 
-  border: 1px solid black;
-  box-shadow: 2px 2px 3px black;
+  background: white; 
   width: 100vw;
-  height: 90vh;
+  height: 80vh;
 }
 
 #photo {
   border: 1px solid black;
   box-shadow: 2px 2px 3px black;
   width: 100vw;
-  height: 90vh;
+  height: 80vh;
 }
 
 #canvas {
@@ -19,11 +40,13 @@
 
 .camera {
   width: 100vw;
+  height: 90vh;
   /* display: inline-block; */
 }
 
 .output {
   width: 100vw;
+  height: 90vh;
   /* display: inline-block; */
   vertical-align: top;
 }
