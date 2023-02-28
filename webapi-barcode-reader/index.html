@@ -12,7 +12,9 @@
     <script src="./main.js" async></script>
     <div class="contentarea">
       <div class="camera" id="camera">
-        <video id="video">Video stream not available.</video>
+        <video id="video" playsinline autoplay muted>
+          Video stream not available.
+        </video>
         <button id="startbutton">
           <i class="fa fa-camera"></i>
         </button>
@@ -21,9 +23,7 @@
       <div class="output" id="output" hidden>
         <img id="photo" alt="The screen capture will appear in this box." />
         <p id="result">CODE</p>
-        <button id="newphotobutton">
-          Take another picture
-        </button>
+        <button id="newphotobutton">Take another picture</button>
       </div>
     </div>
   </body>
