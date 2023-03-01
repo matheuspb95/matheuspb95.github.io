@@ -135,7 +135,7 @@
   }
 
   async function sendImgtoAPI(imgData) {
-    result.innerHTML = "Sending code to API";
+    result.value = "Sending code to API";
     document.getElementById("camera").hidden = true;
     document.getElementById("output").hidden = false;
     // const res = await fetch(imgData);
@@ -164,12 +164,12 @@
       .then((data) => {
         if (data["Barcodes"].length > 0) {
           if (data["Barcodes"][0]["Text"]) {
-            result.innerHTML = "Code: " + data["Barcodes"][0]["Text"];
+            result.value = data["Barcodes"][0]["Text"];
           } else {
-            result.innerHTML = "No code found";
+            result.value = "No code found";
           }
         } else {
-          result.innerHTML = "No code found";
+          result.value = "No code found";
         }
       })
       .catch((e) => console.log(e));
@@ -186,7 +186,17 @@
     if (width && height) {
       canvas.width = width;
       canvas.height = height;
-      context.drawImage(video, 0, 0, width, height);
+      context.drawImage(
+        video,
+        width * 0.45,
+        height * 0.0,
+        width * 0.25,
+        height * 1.15,
+        width * 0.4,
+        height * 0,
+        width * 0.2,
+        height * 1.0
+      );
 
       const data = canvas.toDataURL("image/png");
       sendImgtoAPI(data);
@@ -200,3 +210,26 @@
   // once loading is complete.
   window.addEventListener("load", startup, false);
 })();
+
+const copyCode = () => {
+  result.select();
+  result.setSelectionRange(0, 99999); // For mobile devices
+
+  // Copy the text inside the text field
+  navigator.clipboard.writeText(result.value);
+  showSnackBar("Código copiado: " + result.value);
+};
+
+function showSnackBar(textMsg) {
+  // Get the snackbar DIV
+  var x = document.getElementById("snackbar");
+
+  // Add the "show" class to DIV
+  x.className = "show";
+  x.innerHTML = textMsg;
+
+  // After 3 seconds, remove the show class from DIV
+  setTimeout(function () {
+    x.className = x.className.replace("show", "");
+  }, 3000);
+}

@@ -26,9 +26,13 @@
       <canvas id="canvas"> </canvas>
       <div class="output" id="output" hidden>
         <img id="photo" alt="The screen capture will appear in this box." />
-        <p id="result">CODE</p>
+        <form onsubmit="event.preventDefault();copyCode()">
+          <input disabled type="text" id="result" name="codvalue"><br>
+          <input type="submit" value="Copiar Código">
+        </form>
         <button id="newphotobutton">Take another picture</button>
       </div>
+      <div id="snackbar"></div>
     </div>
   </body>
 </html>
