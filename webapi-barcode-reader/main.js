@@ -191,6 +191,14 @@
       context.fillStyle = "white";
       context.fill();
 
+      context.imageSmoothingEnabled = false;
+
+      context.globalCompositeOperation ='saturation';
+      context.fillStyle = "black";
+      context.globalAlpha = 2;  // alpha 0 = no effect 1 = full effect
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      // context.filter = "saturate(5)"
+
       const data = canvas.toDataURL("image/png");
       sendImgtoAPI(data);
       photo.setAttribute("src", data);
