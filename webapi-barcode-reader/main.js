@@ -48,10 +48,10 @@
 
     navigator.mediaDevices
       .getUserMedia({
-        // video: {
-        //   facingMode: { exact: "environment" },
-        // },
-        video: true,
+        video: {
+          facingMode: { exact: "environment" },
+        },
+        // video: true,
         audio: false,
       })
       .then((stream) => {
@@ -192,10 +192,6 @@
         height * 0.0,
         width * 1,
         height * 1,
-        // width * 0,
-        // height * 0,
-        // width * 1,
-        // height * 1
       );
       context.beginPath();
       context.rect(0, 0, width * 0.4, height);
