@@ -48,10 +48,10 @@
 
     navigator.mediaDevices
       .getUserMedia({
-        video: {
-          facingMode: { exact: "environment" },
-        },
-        // video: true,
+        // video: {
+        //   facingMode: { exact: "environment" },
+        // },
+        video: true,
         audio: false,
       })
       .then((stream) => {
@@ -188,15 +188,24 @@
       canvas.height = height;
       context.drawImage(
         video,
-        width * 0.45,
+        width * 0,
         height * 0.0,
-        width * 0.25,
-        height * 1.15,
-        width * 0.4,
-        height * 0,
-        width * 0.2,
-        height * 1.0
+        width * 1,
+        height * 1,
+        // width * 0,
+        // height * 0,
+        // width * 1,
+        // height * 1
       );
+      context.beginPath();
+      context.rect(0, 0, width * 0.4, height);
+      context.fillStyle = "white";
+      context.fill();
+
+      context.beginPath();
+      context.rect(width * 0.6, 0, width, height);
+      context.fillStyle = "white";
+      context.fill();
 
       const data = canvas.toDataURL("image/png");
       sendImgtoAPI(data);
