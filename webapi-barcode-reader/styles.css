@@ -2,12 +2,20 @@ body {
   margin: 0;
 }
 
+#panel1 {
+  background-color: #33333377;
+  position: absolute;
+  top: 0;
+  bottom: 10vh;
+  left: 0;
+  right: 60vw;
+}
 
 #panel2 {
   background-color: #33333377;
   position: absolute;
   top: 0;
-  bottom: 0;
+  bottom: 10vh;
   left: 60vw;
   right: 0;
 }
@@ -95,15 +103,6 @@ form {
     bottom: 0;
     opacity: 0;
   }
-}
-
-#panel1 {
-  background-color: #33333377;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 60vw;
 }
 
 #video {

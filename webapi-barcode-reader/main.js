@@ -49,7 +49,7 @@
     navigator.mediaDevices
       .getUserMedia({
         video: {
-          facingMode: { exact: "environment" },
+          facingMode: { ideal: "environment" },
         },
         // video: true,
         audio: false,
@@ -99,6 +99,7 @@
       (ev) => {
         document.getElementById("camera").hidden = false;
         document.getElementById("output").hidden = true;
+        inputElement.value = null;
         ev.preventDefault();
       },
       false
@@ -111,6 +112,7 @@
   // captured.
 
   function clearphoto() {
+    console.log("cinza");
     const context = canvas.getContext("2d");
     context.fillStyle = "#AAA";
     context.fillRect(0, 0, canvas.width, canvas.height);
@@ -138,14 +140,6 @@
     result.value = "Sending code to API";
     document.getElementById("camera").hidden = true;
     document.getElementById("output").hidden = false;
-    // const res = await fetch(imgData);
-    // const blob = await res.blob();
-    // const formData = new FormData();
-    // const file = new File([blob], "img.jpg", {
-    //   type: blob.type,
-    // });
-    // formData.append("imageFile", file, "file");
-    // console.log(formData);
 
     var formData = formDataOptions();
     formData.append("image", imgData);
@@ -186,13 +180,7 @@
     if (width && height) {
       canvas.width = width;
       canvas.height = height;
-      context.drawImage(
-        video,
-        width * 0,
-        height * 0.0,
-        width * 1,
-        height * 1,
-      );
+      context.drawImage(video, width * 0, height * 0.0, width * 1, height * 1);
       context.beginPath();
       context.rect(0, 0, width * 0.4, height);
       context.fillStyle = "white";
@@ -210,6 +198,47 @@
       clearphoto();
     }
   }
+
+  const inputElement = document.getElementById("myfile");
+
+  inputElement.addEventListener(
+    "change",
+    (ev) => {
+      let file = ev.target.files[0];
+      photo.src = URL.createObjectURL(file);
+
+      result.value = "Sending code to API";
+      document.getElementById("camera").hidden = true;
+      document.getElementById("output").hidden = false;
+      var formData = formDataOptions();
+      formData.append("file[]", file, file.name);
+
+      fetch("https://wabr.inliteresearch.com/barcodes", {
+        headers: {
+          accept: "application/json",
+          Authorization: "weggrjukmgh67856ushhgargagawa53",
+        },
+        body: formData,
+        method: "POST",
+        mode: "cors",
+        credentials: "omit",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data["Barcodes"].length > 0) {
+            if (data["Barcodes"][0]["Text"]) {
+              result.value = data["Barcodes"][0]["Text"];
+            } else {
+              result.value = "No code found";
+            }
+          } else {
+            result.value = "No code found";
+          }
+        })
+        .catch((e) => console.log(e));
+    },
+    false
+  );
 
   // Set up our event listener to run the startup process
   // once loading is complete.
