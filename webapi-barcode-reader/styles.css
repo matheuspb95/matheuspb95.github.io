@@ -6,7 +6,7 @@ body {
   background-color: #33333377;
   position: absolute;
   top: 0;
-  bottom: 10vh;
+  bottom: 0;
   left: 0;
   right: 60vw;
 }
@@ -15,16 +15,16 @@ body {
   background-color: #33333377;
   position: absolute;
   top: 0;
-  bottom: 10vh;
+  bottom: 0;
   left: 60vw;
   right: 0;
 }
 .custom-file-input::-webkit-file-upload-button {
   visibility: hidden;
-  color: rgba(0, 0, 0, 0)
+  color: rgba(0, 0, 0, 0);
 }
 .custom-file-input::before {
-  content: 'Or Select a File:';
+  content: "Or Select a File:";
   display: inline-block;
   background: linear-gradient(top, #f9f9f9, #e3e3e3);
   border: 1px solid #999;
@@ -47,15 +47,20 @@ body {
 }
 
 #fileupload {
-  margin: 1vw;
+  margin: 5vw;
   border: #333;
   position: absolute;
-  bottom: 3vh;
+  margin-left: 5vw;
+  bottom: 5vh;
+
   max-width: -webkit-fill-available;
-  color: white;
+  color: #33333300;
 }
 
-input,
+input {
+  font-size: 4vw;
+}
+
 label,
 textarea {
   font-size: 3vw;
@@ -180,10 +185,10 @@ form {
 
 #startbutton {
   display: block;
-  position: relative;
-  margin-left: auto;
+  position: absolute;
+  margin-left: 42.3vw;
   margin-right: auto;
-  bottom: 10vh;
+  bottom: 5vh;
   background-color: rgb(80, 0, 150);
   border: 1px solid rgba(255, 255, 255, 0.7);
   box-shadow: 0px 0px 1px 2px rgba(0, 0, 0, 0.2);
