@@ -21,6 +21,7 @@ body {
 }
 .custom-file-input::-webkit-file-upload-button {
   visibility: hidden;
+  color: rgba(0, 0, 0, 0)
 }
 .custom-file-input::before {
   content: 'Or Select a File:';
