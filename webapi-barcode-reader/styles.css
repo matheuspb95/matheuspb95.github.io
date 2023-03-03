@@ -52,7 +52,7 @@ body {
   position: absolute;
   bottom: 3vh;
   max-width: -webkit-fill-available;
-
+  color: white;
 }
 
 input,
