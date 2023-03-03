@@ -47,6 +47,7 @@ body {
 }
 
 #fileupload {
+  margin: 1vw;
   border: #333;
   position: absolute;
   bottom: 3vh;
