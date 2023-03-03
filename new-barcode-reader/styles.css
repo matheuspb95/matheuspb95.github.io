@@ -1,0 +1,185 @@
+body {
+  margin: 0;
+}
+
+#panel1 {
+  background-color: #33333377;
+  position: absolute;
+  top: 0;
+  bottom: 20vh;
+  left: 0;
+  right: 60vw;
+}
+
+#panel2 {
+  background-color: #33333377;
+  position: absolute;
+  top: 0;
+  bottom: 20vh;
+  left: 60vw;
+  right: 0;
+}
+
+#fileupload {
+  position: absolute;
+  bottom: 3vh;
+  max-width: -webkit-fill-available;
+}
+
+input,
+label,
+textarea {
+  font-size: 2vh;
+  max-width: inherit;
+}
+
+#result {
+  margin: 0 1vw;
+  flex: auto;
+}
+
+form {
+  display: flex;
+  justify-content: space-between;
+  padding: 1vh;
+}
+
+/* The snackbar - position it at the bottom and in the middle of the screen */
+#snackbar {
+  visibility: hidden; /* Hidden by default. Visible on click */
+  min-width: 25vw; /* Set a default minimum width */
+  margin-left: 0; /* Divide value of min-width by 2 */
+  background-color: #333; /* Black background color */
+  color: #fff; /* White text color */
+  text-align: center; /* Centered text */
+  border-radius: 0.2vh; /* Rounded borders */
+  padding: 1.6vh; /* Padding */
+  position: fixed; /* Sit on top of the screen */
+  z-index: 1; /* Add a z-index if needed */
+  left: 0; /* Center the snackbar */
+  bottom: 3vh; /* 30px from the bottom */
+}
+
+/* Show the snackbar when clicking on a button (class added with JavaScript) */
+#snackbar.show {
+  visibility: visible; /* Show the snackbar */
+  /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+    However, delay the fade out process for 2.5 seconds */
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+/* Animations to fade the snackbar in and out */
+@-webkit-keyframes fadein {
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+  to {
+    bottom: 3vh;
+    opacity: 1;
+  }
+}
+
+@keyframes fadein {
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+  to {
+    bottom: 3vh;
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadeout {
+  from {
+    bottom: 3vh;
+    opacity: 1;
+  }
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    bottom: 3vh;
+    opacity: 1;
+  }
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
+}
+
+#video {
+  background: white;
+  width: 100vw;
+  height: 80vh;
+}
+
+#photo {
+  border: 1px solid black;
+  box-shadow: 2px 2px 3px black;
+  width: 100vw;
+  max-height: 80vh;
+}
+
+#canvas {
+  display: none;
+}
+
+.camera {
+  width: 100vw;
+  height: 90vh;
+  /* display: inline-block; */
+}
+
+.output {
+  width: 100vw;
+  height: 90vh;
+  vertical-align: top;
+}
+
+#flex {
+  height: -webkit-fill-available;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+#startbutton {
+  display: block;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  bottom: 7vh;
+  background-color: rgb(80, 0, 150);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0px 0px 1px 2px rgba(0, 0, 0, 0.2);
+  font-size: 10vw;
+  padding: 2.5vw;
+  font-family: "Lucida Grande", "Arial", sans-serif;
+  color: rgba(255, 255, 255, 1);
+}
+
+#newphotobutton {
+  display: block;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: rgb(80, 0, 150);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0px 0px 1px 2px rgba(0, 0, 0, 0.2);
+  font-size: 5vw;
+  font-family: "Lucida Grande", "Arial", sans-serif;
+  color: rgba(255, 255, 255, 1);
+}
+
+.contentarea {
+  font-size: 1.6vh;
+  font-family: "Lucida Grande", "Arial", sans-serif;
+  width: 100vw;
+}

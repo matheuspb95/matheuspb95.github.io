@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script
+      type="text/javascript"
+      src="https://code.jquery.com/jquery-latest.min.js"
+    ></script>
+    <title>WaBR Javascript API</title>
+  </head>
+
+  <body>
+    <p />
+    URL
+    <input
+      id="url"
+      size="80"
+      type="text"
+      value="https://wabr.inliteresearch.com/SampleImages/1d.pdf"
+    />
+    <input
+      id="read_url"
+      type="button"
+      value="Submit"
+      onclick="read_url_onclick()"
+    />
+    <p />
+    FILE(s):
+    <input id="files" type="file" name="file[]" multiple />
+    <input
+      id="read_file"
+      type="button"
+      value="Submit"
+      onclick="read_files_onclick()"
+    />
+    <p />
+    base64:
+    <input id="file_base64" type="file" />
+    <input
+      id="read_base64"
+      type="button"
+      value="Submit as Base64"
+      onclick="read_base64_onclick()"
+    />
+    <p />
+    <textarea id="result" rows="10" cols="90">
+Result will be displayed here</textarea
+    >
+
+    <script type="text/javascript">
+      //  WaBR server endpoint
+      //  For Inlite's WaBR Test Server: "https://wabr.inliteresearch.com/barcodes"
+      //    For production: Replace  with your in-house WaBR server endpoint or Inlite's WaBR SaaS server  enddpoint
+      var server = "https://wabr.inliteresearch.com/barcodes";
+
+      // Optional.  Required to read all barcode data using WaBR Test Server and aBR SaaS Server
+      var auth = "weggrjukmgh67856ushhgargagawa53";
+
+      // Optional.  List of barcode types to read
+      // Selecting specific values optimizes WaBR performance
+      // Valid values  are listed  at http://how-to.inliteresearch.com/web-api-barcode-reader/#types
+      var types = ""; // e.g. "Code39,Code128"  reads only Code39 and Code128 barcodes
+      // Optional.  Other WABR options listed at  http://how-to.inliteresearch.com/web-api-barcode-reader/#Optional-reader-parameters
+      var tbr = "";
+      var options = "";
+      var format = "";
+
+      function formDataOptions() {
+        var formData = new FormData();
+        if (types !== "") formData.append("types", types);
+        if (tbr !== "") formData.append("tbr", tbr);
+        if (options !== "") formData.append("options", options);
+        if (format !== "") formData.append("format", format);
+        return formData;
+      }
+
+      function queryOptions() {
+        var s = "";
+        if (types !== "") s += "&types=" + types;
+        if (tbr !== "") s += "&tbr" + tbr;
+        if (options !== "") s += "&options" + options;
+        if (format !== "") s += "&format" + format;
+        return s;
+      }
+
+      function parseJson(obj) {
+        if (obj.Barcodes.length === 0) return "No barcodes found";
+        var result = "",
+          tab = "   ",
+          nl = "\n";
+        for (var i = 0; i < obj.Barcodes.length; i++) {
+          var objBarcode = obj.Barcodes[i];
+          result += "Barcode # " + (i + 1) + nl;
+          result += tab + "Text = " + objBarcode.Text + nl;
+          result +=
+            tab +
+            "Type = " +
+            objBarcode.Type +
+            tab +
+            "Length = " +
+            objBarcode.Length +
+            tab +
+            "Rotation = " +
+            objBarcode.Rotation +
+            nl;
+          result += tab + "Data (base64) = '" + objBarcode.Data + "'" + nl;
+          result +=
+            tab +
+            "Rect (l:t-r:b) = " +
+            objBarcode.Left +
+            ":" +
+            objBarcode.Top +
+            " - " +
+            objBarcode.Right +
+            ":" +
+            objBarcode.Bottom +
+            nl;
+          result +=
+            tab +
+            "File = " +
+            objBarcode.File +
+            tab +
+            "Page = " +
+            objBarcode.Page +
+            nl;
+          if (objBarcode.Meta !== undefined)
+            result += tab + "Meta = " + objBarcode.Meta + nl;
+          if (objBarcode.Values !== undefined) {
+            result += tab + "Values" + nl;
+            var objValues = objBarcode.Values;
+            var keys = Object.keys(objValues);
+            if (keys.length == 1) {
+              var obj2 = objValues[keys[0]];
+              var keys2 = Object.keys(obj2);
+              for (var j = 0; j < keys2.length; j++) {
+                var obj3 = obj2[keys2[j]];
+                result += tab + tab + keys2[j] + " = " + obj3 + nl;
+              }
+            }
+          }
+        }
+        return result;
+      }
+
+      function proc_error(jqXHR, textStatus, errorThrown) {
+        if (jqXHR.status === 0)
+          return "CORS error or server URL is not resolved: " + server;
+        var tab = "   ";
+        return (
+          "STATUS: " +
+          jqXHR.status +
+          tab +
+          textStatus +
+          tab +
+          errorThrown +
+          tab +
+          jqXHR.responseText
+        );
+      }
+
+      function read_url_onclick() {
+        try {
+          var result = document.getElementById("result");
+          result.value = "Processing 'read_url_onclick'";
+          var url = document.getElementById("url").value;
+          if (url.length === 0) {
+            alert("Set valid  URL value");
+            return;
+          }
+          $.ajax({
+            url: server + "?url=" + encodeURIComponent(url) + queryOptions(),
+            headers: {
+              // Optional.  Required to read all barcode data using WaBR Test Server
+              Authorization: auth,
+            },
+          })
+            .success(function (json) {
+              result.value = parseJson(json);
+            })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+              result.value = proc_error(jqXHR, textStatus, errorThrown);
+            });
+        } catch (err) {
+          result.value = "ERROR:  " + err.message;
+        }
+      }
+
+      function read_files_onclick() {
+        try {
+          var result = document.getElementById("result");
+          result.value = "Processing 'read_files_onclick'";
+          var files = document.getElementById("files").files;
+          if (files.length === 0) {
+            alert("Select files");
+            return;
+          }
+          var formData = formDataOptions();
+          for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            formData.append("file[]", file, file.name);
+          }
+          $.ajax({
+            url: server,
+            type: "post",
+            data: formData,
+            headers: {
+              // Optional.  Required to read all barcode data using WaBR Test Server
+              Authorization: auth,
+            },
+            processData: false,
+            contentType: false,
+          })
+            .success(function (json) {
+              result.value = parseJson(json);
+            })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+              result.value = proc_error(jqXHR, textStatus, errorThrown);
+            });
+        } catch (err) {
+          result.value = "ERROR:  " + err.message;
+        }
+      }
+
+      function read_base64_onclick() {
+        try {
+          var result = document.getElementById("result");
+          result.value = "Processing 'read_files_onclick'";
+          // see http://blog.teamtreehouse.com/uploading-files-ajax
+          var file = document.getElementById("file_base64").files[0];
+          if (file === undefined) {
+            alert("Select file");
+            return;
+          }
+          var fileReader = new FileReader();
+          fileReader.onload = function (e) {
+            var base64 =
+              "data:" + file.type + e.target.result + ":::" + file.name;
+            var formData = formDataOptions();
+            formData.append("image", base64);
+            $.ajax({
+              url: server,
+              type: "post",
+              data: formData,
+              headers: {
+                // Optional.  Required to read all barcode data using WaBR Test Server
+                Authorization: auth,
+              },
+              processData: false,
+              contentType: false,
+            })
+              .success(function (json) {
+                result.value = parseJson(json);
+              })
+              .fail(function (jqXHR, textStatus, errorThrown) {
+                result.value = proc_error(jqXHR, textStatus, errorThrown);
+              });
+          };
+          fileReader.readAsDataURL(file);
+        } catch (err) {
+          result.value = "ERROR:  " + err.message;
+        }
+      }
+    </script>
+  </body>
+</html>
