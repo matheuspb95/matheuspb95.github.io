@@ -6,7 +6,7 @@ body {
   background-color: #33333377;
   position: absolute;
   top: 0;
-  bottom: 10vh;
+  bottom: 20vh;
   left: 0;
   right: 60vw;
 }
@@ -15,13 +15,22 @@ body {
   background-color: #33333377;
   position: absolute;
   top: 0;
-  bottom: 10vh;
+  bottom: 20vh;
   left: 60vw;
   right: 0;
 }
 
-input, label {
-  font-size: 1.5vh;
+#fileupload {
+  position: absolute;
+  bottom: 3vh;
+  max-width: -webkit-fill-available;
+}
+
+input,
+label,
+textarea {
+  font-size: 2vh;
+  max-width: inherit;
 }
 
 #result {
@@ -106,7 +115,7 @@ form {
 }
 
 #video {
-  background: white; 
+  background: white;
   width: 100vw;
   height: 80vh;
 }
@@ -115,7 +124,7 @@ form {
   border: 1px solid black;
   box-shadow: 2px 2px 3px black;
   width: 100vw;
-  height: 80vh;
+  max-height: 80vh;
 }
 
 #canvas {
@@ -131,8 +140,14 @@ form {
 .output {
   width: 100vw;
   height: 90vh;
-  /* display: inline-block; */
   vertical-align: top;
+}
+
+#flex {
+  height: -webkit-fill-available;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
 #startbutton {
@@ -140,12 +155,12 @@ form {
   position: relative;
   margin-left: auto;
   margin-right: auto;
-  bottom: 4vh;
+  bottom: 7vh;
   background-color: rgb(80, 0, 150);
   border: 1px solid rgba(255, 255, 255, 0.7);
   box-shadow: 0px 0px 1px 2px rgba(0, 0, 0, 0.2);
   font-size: 10vw;
-  padding: 2vw;
+  padding: 2.5vw;
   font-family: "Lucida Grande", "Arial", sans-serif;
   color: rgba(255, 255, 255, 1);
 }

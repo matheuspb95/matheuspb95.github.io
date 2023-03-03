@@ -22,17 +22,27 @@
         <button id="startbutton">
           <i class="fa fa-camera"></i>
         </button>
-        <label for="myfile">Or select a file:</label>
-        <input accept="image/*" type="file" id="myfile" name="myfile" />
+        <div id="fileupload">
+          <label for="myfile">Or select a file:</label>
+          <input accept="image/*" type="file" id="myfile" name="myfile" />
+        </div>
       </div>
       <canvas id="canvas"> </canvas>
       <div class="output" id="output" hidden>
-        <img id="photo" alt="The screen capture will appear in this box." />
-        <form onsubmit="event.preventDefault();copyCode()">
-          <input disabled type="text" id="result" name="codvalue" /><br />
-          <input type="submit" value="Copiar Código" />
-        </form>
-        <button id="newphotobutton">Take another picture</button>
+        <div id="flex">
+          <img id="photo" alt="The screen capture will appear in this box." />
+          <form onsubmit="event.preventDefault();copyCode()">
+            <textarea
+              disabled
+              type="text"
+              id="result"
+              name="codvalue"
+            ></textarea
+            ><br />
+            <input type="submit" value="Copiar Código" />
+          </form>
+          <button id="newphotobutton">Take another picture</button>
+        </div>
       </div>
       <div id="snackbar"></div>
     </div>

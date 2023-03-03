@@ -137,7 +137,7 @@
   }
 
   async function sendImgtoAPI(imgData) {
-    result.value = "Sending code to API";
+    result.innerHTML = "Sending code to API";
     document.getElementById("camera").hidden = true;
     document.getElementById("output").hidden = false;
 
@@ -158,12 +158,12 @@
       .then((data) => {
         if (data["Barcodes"].length > 0) {
           if (data["Barcodes"][0]["Text"]) {
-            result.value = data["Barcodes"][0]["Text"];
+            result.innerHTML = data["Barcodes"][0]["Text"];
           } else {
-            result.value = "No code found";
+            result.innerHTML = "No code found";
           }
         } else {
-          result.value = "No code found";
+          result.innerHTML = "No code found";
         }
       })
       .catch((e) => console.log(e));
@@ -193,9 +193,9 @@
 
       context.imageSmoothingEnabled = false;
 
-      context.globalCompositeOperation ='saturation';
+      context.globalCompositeOperation = "saturation";
       context.fillStyle = "black";
-      context.globalAlpha = 2;  // alpha 0 = no effect 1 = full effect
+      context.globalAlpha = 2; // alpha 0 = no effect 1 = full effect
       context.fillRect(0, 0, canvas.width, canvas.height);
       // context.filter = "saturate(5)"
 
@@ -213,9 +213,11 @@
     "change",
     (ev) => {
       let file = ev.target.files[0];
+      console.log(file);
+
       photo.src = URL.createObjectURL(file);
 
-      result.value = "Sending code to API";
+      result.innerHTML = "Sending code to API";
       document.getElementById("camera").hidden = true;
       document.getElementById("output").hidden = false;
       var formData = formDataOptions();
@@ -235,12 +237,12 @@
         .then((data) => {
           if (data["Barcodes"].length > 0) {
             if (data["Barcodes"][0]["Text"]) {
-              result.value = data["Barcodes"][0]["Text"];
+              result.innerHTML = data["Barcodes"][0]["Text"];
             } else {
-              result.value = "No code found";
+              result.innerHTML = "No code found";
             }
           } else {
-            result.value = "No code found";
+            result.innerHTML = "No code found";
           }
         })
         .catch((e) => console.log(e));
@@ -258,8 +260,8 @@ const copyCode = () => {
   result.setSelectionRange(0, 99999); // For mobile devices
 
   // Copy the text inside the text field
-  navigator.clipboard.writeText(result.value);
-  showSnackBar("Código copiado: " + result.value);
+  navigator.clipboard.writeText(result.innerHTML);
+  showSnackBar("Código copiado: " + result.innerHTML);
 };
 
 function showSnackBar(textMsg) {
