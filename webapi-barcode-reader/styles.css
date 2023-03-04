@@ -46,15 +46,25 @@ body {
   background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
 }
 
+#myfile {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
 #fileupload {
   margin: 5vw;
   border: #333;
   position: absolute;
   margin-left: 5vw;
   bottom: 5vh;
-
   max-width: -webkit-fill-available;
   color: #33333300;
+}
+
+::file-selector-button {
+  -webkit-appearance: none;
+  appearance: none;
+  font-size: 4vw;
 }
 
 input {
