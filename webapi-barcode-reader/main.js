@@ -168,36 +168,38 @@
       .catch((e) => console.log(e));
   }
 
+
   async function sendImgtoAPI_2(imgData) {
     result.innerHTML = "Sending code to API";
     document.getElementById("camera").hidden = true;
     document.getElementById("output").hidden = false;
+
+    var client_id = "cdccab7e-8f00-4ea7-a345-7a76c08c383d";
+    var client_secret = "b3680ccc4dcc14abf514eb72792846d4";
+
 
     var formData = formDataOptions();
     formData.append("type", "");
     formData.append("quality", 2);
     formData.append("fileBase64", imgData);
 
-    fetch(
-      "https://api.products.aspose.app/barcode/recognize/apiRequestRecognize",
-      {
-        headers: {
-          accept: "application/json",
-          // Authorization: "weggrjukmgh67856ushhgargagawa53",
-          origin: "https://products.aspose.app",
-          referer: "https://products.aspose.app/",
-        },
-        body: formData,
-        method: "POST",
-        mode: "cors",
-        credentials: "omit",
-      }
-    )
+    var formDataToken = new FormData();
+    formDataToken.append("grant_type", "client_credentials");
+
+    fetch("https://api.aspose.cloud/connect/token", {
+      headers: {
+        accept: "application/json",
+        authorization: "Basic " + btoa(client_id+":"+client_secret)
+      },
+      body: formDataToken,
+      method: "POST",
+    })
       .then((res) => {
         console.log(res);
         return res.json();
       })
       .then((data) => {
+
         console.log(data);
         if (data["Barcodes"].length > 0) {
           if (data["Barcodes"][0]["Text"]) {
@@ -211,6 +213,7 @@
       })
       .catch((e) => console.log(e));
   }
+
 
   // Capture a photo by fetching the current contents of the video
   // and drawing it into a canvas, then converting that to a PNG
