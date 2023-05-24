@@ -169,6 +169,9 @@
   }
 
   async function sendImgtoAPI(imgData) {
+    result.innerHTML = "Sending code to API";
+    document.getElementById("camera").hidden = true;
+    document.getElementById("output").hidden = false;
     fetch(imgData)
       .then((res) => res.blob())
       .then((blob) => {
