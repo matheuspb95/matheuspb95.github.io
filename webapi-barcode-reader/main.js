@@ -169,85 +169,31 @@
   }
 
   async function sendImgtoAPI_2(imgData) {
-    result.innerHTML = "Sending code to API";
-    document.getElementById("camera").hidden = true;
-    document.getElementById("output").hidden = false;
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+    myHeaders.append(
+      "Authorization",
+      "Basic Y2RjY2FiN2UtOGYwMC00ZWE3LWEzNDUtN2E3NmMwOGMzODNkOmIzNjgwY2NjNGRjYzE0YWJmNTE0ZWI3Mjc5Mjg0NmQ0"
+    );
+    myHeaders.append(
+      "Cookie",
+      "AWSALB=nc6fqskcK03/4P/jcyGD4W/f7LL3drKCZUJSO21dOWKUPmrp8R6qeNhc70hs04Cio5l3j47jEr++NS2U72jqJAB4ODI7qlWZd+nZCkXYDnlrm7UBnW/2YRsKPUsy; AWSALBCORS=nc6fqskcK03/4P/jcyGD4W/f7LL3drKCZUJSO21dOWKUPmrp8R6qeNhc70hs04Cio5l3j47jEr++NS2U72jqJAB4ODI7qlWZd+nZCkXYDnlrm7UBnW/2YRsKPUsy"
+    );
 
-    var client_id = "cdccab7e-8f00-4ea7-a345-7a76c08c383d";
-    var client_secret = "b3680ccc4dcc14abf514eb72792846d4";
+    var urlencoded = new URLSearchParams();
+    urlencoded.append("grant_type", "client_credentials");
 
-    var formData = formDataOptions();
-    formData.append("type", "");
-    formData.append("quality", 2);
-    formData.append("fileBase64", imgData);
-
-    var formDataToken = new FormData();
-    formDataToken.append("grant_type", "client_credentials");
-
-    // fetch("https://api.aspose.cloud/connect/token", {
-    //   headers: {
-    //     accept: "application/json, text/plain, */*",
-    //     "accept-language": "en-US,en;q=0.9",
-    //     authorization:
-    //       "Basic Y2RjY2FiN2UtOGYwMC00ZWE3LWEzNDUtN2E3NmMwOGMzODNkOmIzNjgwY2NjNGRjYzE0YWJmNTE0ZWI3Mjc5Mjg0NmQ0",
-    //     "content-type": "application/x-www-form-urlencoded",
-    //     "sec-ch-ua": '"Chromium";v="112", "Not_A Brand";v="24", "Opera";v="98"',
-    //     "sec-ch-ua-mobile": "?0",
-    //     "sec-ch-ua-platform": '"Linux"',
-    //     "sec-fetch-dest": "empty",
-    //     "sec-fetch-mode": "cors",
-    //     "sec-fetch-site": "same-site",
-    //     "x-aspose-client": "Containerize.Swagger",
-    //     "x-requested-with": "XMLHttpRequest",
-    //   },
-    //   referrer: "https://reference.aspose.cloud/",
-    //   referrerPolicy: "strict-origin-when-cross-origin",
-    //   body: "grant_type=client_credentials",
-    //   method: "POST",
-    //   mode: "cors",
-    //   credentials: "include",
-    // });
-
-    fetch("https://api.aspose.cloud/connect/token", {
-      headers: {
-        accept: "application/json, text/plain, */*",
-        "accept-language": "en-US,en;q=0.9",
-        authorization:
-          "Basic Y2RjY2FiN2UtOGYwMC00ZWE3LWEzNDUtN2E3NmMwOGMzODNkOmIzNjgwY2NjNGRjYzE0YWJmNTE0ZWI3Mjc5Mjg0NmQ0",
-        "content-type": "application/x-www-form-urlencoded",
-        "sec-ch-ua": '"Chromium";v="112", "Not_A Brand";v="24", "Opera";v="98"',
-        "sec-ch-ua-mobile": "?0",
-        "sec-ch-ua-platform": '"Linux"',
-        "sec-fetch-dest": "empty",
-        "sec-fetch-mode": "cors",
-        "sec-fetch-site": "same-site",
-        "x-aspose-client": "Containerize.Swagger",
-        "x-requested-with": "XMLHttpRequest",
-      },
-      referrer: "https://reference.aspose.cloud/",
-      referrerPolicy: "strict-origin-when-cross-origin",
-      body: "grant_type=client_credentials",
+    var requestOptions = {
       method: "POST",
-      mode: "no-cors",
-      credentials: "include",
-    })
-      .then((res) => {
-        console.log(res);
-        return res.json();
-      })
-      .then((data) => {
-        console.log(data);
-        if (data["Barcodes"].length > 0) {
-          if (data["Barcodes"][0]["Text"]) {
-            result.innerHTML = data["Barcodes"][0]["Text"];
-          } else {
-            result.innerHTML = "No code found";
-          }
-        } else {
-          result.innerHTML = "No code found";
-        }
-      })
-      .catch((e) => console.log(e));
+      headers: myHeaders,
+      body: urlencoded,
+      redirect: "follow",
+    };
+
+    fetch("https://api.aspose.cloud/connect/token", requestOptions)
+      .then((response) => response.text())
+      .then((result) => console.log(result))
+      .catch((error) => console.log("error", error));
   }
 
   // Capture a photo by fetching the current contents of the video
