@@ -112,7 +112,6 @@
   // captured.
 
   function clearphoto() {
-    console.log("cinza");
     const context = canvas.getContext("2d");
     context.fillStyle = "#AAA";
     context.fillRect(0, 0, canvas.width, canvas.height);
@@ -169,6 +168,50 @@
       .catch((e) => console.log(e));
   }
 
+  async function sendImgtoAPI_2(imgData) {
+    result.innerHTML = "Sending code to API";
+    document.getElementById("camera").hidden = true;
+    document.getElementById("output").hidden = false;
+
+    var formData = formDataOptions();
+    formData.append("type", "");
+    formData.append("quality", 2);
+    formData.append("fileBase64", imgData);
+
+    fetch(
+      "https://api.products.aspose.app/barcode/recognize/apiRequestRecognize",
+      {
+        headers: {
+          accept: "application/json",
+          // Authorization: "weggrjukmgh67856ushhgargagawa53",
+          origin: "https://products.aspose.app",
+          referer: "https://products.aspose.app/",
+        },
+        body: formData,
+        method: "POST",
+        mode: "cors",
+        credentials: "omit",
+      }
+    )
+      .then((res) => {
+        console.log(res);
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        if (data["Barcodes"].length > 0) {
+          if (data["Barcodes"][0]["Text"]) {
+            result.innerHTML = data["Barcodes"][0]["Text"];
+          } else {
+            result.innerHTML = "No code found";
+          }
+        } else {
+          result.innerHTML = "No code found";
+        }
+      })
+      .catch((e) => console.log(e));
+  }
+
   // Capture a photo by fetching the current contents of the video
   // and drawing it into a canvas, then converting that to a PNG
   // format data URL. By drawing it on an offscreen canvas and then
@@ -200,7 +243,7 @@
       // context.filter = "saturate(5)"
 
       const data = canvas.toDataURL("image/png");
-      sendImgtoAPI(data);
+      sendImgtoAPI_2(data);
       photo.setAttribute("src", data);
     } else {
       clearphoto();
@@ -213,7 +256,7 @@
     "change",
     (ev) => {
       let file = ev.target.files[0];
-      console.log(file);
+      // console.log(file);
 
       photo.src = URL.createObjectURL(file);
 
