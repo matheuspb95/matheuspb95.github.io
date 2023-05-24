@@ -135,7 +135,7 @@
     return formData;
   }
 
-  async function sendImgtoAPI(imgData) {
+  async function sendImgtoAPI_2(imgData) {
     result.innerHTML = "Sending code to API";
     document.getElementById("camera").hidden = true;
     document.getElementById("output").hidden = false;
@@ -155,9 +155,9 @@
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data["Barcodes"].length > 0) {
-          if (data["Barcodes"][0]["Text"]) {
-            result.innerHTML = data["Barcodes"][0]["Text"];
+        if (data["barcodes"].length > 0) {
+          if (data["barcodes"][0]["Text"]) {
+            result.innerHTML = data["barcodes"][0]["Text"];
           } else {
             result.innerHTML = "No code found";
           }
@@ -168,7 +168,7 @@
       .catch((e) => console.log(e));
   }
 
-  async function sendImgtoAPI_2(imgData) {
+  async function sendImgtoAPI(imgData) {
     fetch(imgData)
       .then((res) => res.blob())
       .then((blob) => {
@@ -196,21 +196,29 @@
 
         fetch("https://api.aspose.cloud/connect/token", requestOptions)
           .then((response) => response.json())
-          .then((result) => {
-            console.log(result);
-
-            var token = result["access_token"];
-
+          .then((data) => {
             fetch("https://api.aspose.cloud/v3.0/barcode/recognize", {
               headers: {
                 accept: "application/json",
                 "accept-language": "en-US,en;q=0.9",
-                authorization: "Bearer " + token,
+                authorization: "Bearer " + data["access_token"],
               },
               body: fd,
               method: "POST",
               mode: "cors",
-            }).then((res) => console.log(res));
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                if (data["barcodes"].length > 0) {
+                  if (data["barcodes"][0]["barcodeValue"]) {
+                    result.innerHTML = data["barcodes"][0]["barcodeValue"];
+                  } else {
+                    result.innerHTML = "No code found";
+                  }
+                } else {
+                  result.innerHTML = "No code found";
+                }
+              });
           })
           .catch((error) => console.log("error", error));
       });
@@ -247,7 +255,7 @@
       // context.filter = "saturate(5)"
 
       const data = canvas.toDataURL("image/png");
-      sendImgtoAPI_2(data);
+      sendImgtoAPI(data);
       photo.setAttribute("src", data);
     } else {
       clearphoto();
@@ -270,29 +278,52 @@
       var formData = formDataOptions();
       formData.append("file[]", file, file.name);
 
-      fetch("https://wabr.inliteresearch.com/barcodes", {
-        headers: {
-          accept: "application/json",
-          Authorization: "weggrjukmgh67856ushhgargagawa53",
-        },
-        body: formData,
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+      myHeaders.append(
+        "Cookie",
+        "AWSALB=nc6fqskcK03/4P/jcyGD4W/f7LL3drKCZUJSO21dOWKUPmrp8R6qeNhc70hs04Cio5l3j47jEr++NS2U72jqJAB4ODI7qlWZd+nZCkXYDnlrm7UBnW/2YRsKPUsy; AWSALBCORS=nc6fqskcK03/4P/jcyGD4W/f7LL3drKCZUJSO21dOWKUPmrp8R6qeNhc70hs04Cio5l3j47jEr++NS2U72jqJAB4ODI7qlWZd+nZCkXYDnlrm7UBnW/2YRsKPUsy"
+      );
+
+      var urlencoded = new URLSearchParams();
+      urlencoded.append("grant_type", "client_credentials");
+      urlencoded.append("client_id", "cdccab7e-8f00-4ea7-a345-7a76c08c383d");
+      urlencoded.append("client_secret", "b3680ccc4dcc14abf514eb72792846d4");
+
+      var requestOptions = {
         method: "POST",
-        mode: "cors",
-        credentials: "omit",
-      })
-        .then((res) => res.json())
+        headers: myHeaders,
+        body: urlencoded,
+        redirect: "follow",
+      };
+
+      fetch("https://api.aspose.cloud/connect/token", requestOptions)
+        .then((response) => response.json())
         .then((data) => {
-          if (data["Barcodes"].length > 0) {
-            if (data["Barcodes"][0]["Text"]) {
-              result.innerHTML = data["Barcodes"][0]["Text"];
-            } else {
-              result.innerHTML = "No code found";
-            }
-          } else {
-            result.innerHTML = "No code found";
-          }
+          fetch("https://api.aspose.cloud/v3.0/barcode/recognize", {
+            headers: {
+              accept: "application/json",
+              "accept-language": "en-US,en;q=0.9",
+              authorization: "Bearer " + data["access_token"],
+            },
+            body: formData,
+            method: "POST",
+            mode: "cors",
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              if (data["barcodes"].length > 0) {
+                if (data["barcodes"][0]["barcodeValue"]) {
+                  result.innerHTML = data["barcodes"][0]["barcodeValue"];
+                } else {
+                  result.innerHTML = "No code found";
+                }
+              } else {
+                result.innerHTML = "No code found";
+              }
+            });
         })
-        .catch((e) => console.log(e));
+        .catch((error) => console.log("error", error));
     },
     false
   );
