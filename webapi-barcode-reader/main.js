@@ -184,6 +184,30 @@
     var formDataToken = new FormData();
     formDataToken.append("grant_type", "client_credentials");
 
+    // fetch("https://api.aspose.cloud/connect/token", {
+    //   headers: {
+    //     accept: "application/json, text/plain, */*",
+    //     "accept-language": "en-US,en;q=0.9",
+    //     authorization:
+    //       "Basic Y2RjY2FiN2UtOGYwMC00ZWE3LWEzNDUtN2E3NmMwOGMzODNkOmIzNjgwY2NjNGRjYzE0YWJmNTE0ZWI3Mjc5Mjg0NmQ0",
+    //     "content-type": "application/x-www-form-urlencoded",
+    //     "sec-ch-ua": '"Chromium";v="112", "Not_A Brand";v="24", "Opera";v="98"',
+    //     "sec-ch-ua-mobile": "?0",
+    //     "sec-ch-ua-platform": '"Linux"',
+    //     "sec-fetch-dest": "empty",
+    //     "sec-fetch-mode": "cors",
+    //     "sec-fetch-site": "same-site",
+    //     "x-aspose-client": "Containerize.Swagger",
+    //     "x-requested-with": "XMLHttpRequest",
+    //   },
+    //   referrer: "https://reference.aspose.cloud/",
+    //   referrerPolicy: "strict-origin-when-cross-origin",
+    //   body: "grant_type=client_credentials",
+    //   method: "POST",
+    //   mode: "cors",
+    //   credentials: "include",
+    // });
+
     fetch("https://api.aspose.cloud/connect/token", {
       headers: {
         accept: "application/json, text/plain, */*",
@@ -204,21 +228,8 @@
       referrerPolicy: "strict-origin-when-cross-origin",
       body: "grant_type=client_credentials",
       method: "POST",
-      mode: "cors",
+      mode: "no-cors",
       credentials: "include",
-    });
-
-    fetch("https://api.aspose.cloud/connect/token", {
-      headers: {
-        accept: "application/json, text/plain, */*",
-        authorization: "Basic " + btoa(client_id + ":" + client_secret),
-        "content-type": "application/x-www-form-urlencoded",
-      },
-      body: new URLSearchParams({
-        grant_type: "client_credentials",
-      }),
-      mode: "cors",
-      method: "POST",
     })
       .then((res) => {
         console.log(res);
