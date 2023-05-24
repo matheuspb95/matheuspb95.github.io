@@ -169,31 +169,51 @@
   }
 
   async function sendImgtoAPI_2(imgData) {
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-    myHeaders.append(
-      "Authorization",
-      "Basic Y2RjY2FiN2UtOGYwMC00ZWE3LWEzNDUtN2E3NmMwOGMzODNkOmIzNjgwY2NjNGRjYzE0YWJmNTE0ZWI3Mjc5Mjg0NmQ0"
-    );
-    myHeaders.append(
-      "Cookie",
-      "AWSALB=nc6fqskcK03/4P/jcyGD4W/f7LL3drKCZUJSO21dOWKUPmrp8R6qeNhc70hs04Cio5l3j47jEr++NS2U72jqJAB4ODI7qlWZd+nZCkXYDnlrm7UBnW/2YRsKPUsy; AWSALBCORS=nc6fqskcK03/4P/jcyGD4W/f7LL3drKCZUJSO21dOWKUPmrp8R6qeNhc70hs04Cio5l3j47jEr++NS2U72jqJAB4ODI7qlWZd+nZCkXYDnlrm7UBnW/2YRsKPUsy"
-    );
+    fetch(imgData)
+      .then((res) => res.blob())
+      .then((blob) => {
+        const fd = new FormData();
+        const file = new File([blob], "filename.jpeg");
+        fd.append("image", file);
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+        myHeaders.append(
+          "Cookie",
+          "AWSALB=nc6fqskcK03/4P/jcyGD4W/f7LL3drKCZUJSO21dOWKUPmrp8R6qeNhc70hs04Cio5l3j47jEr++NS2U72jqJAB4ODI7qlWZd+nZCkXYDnlrm7UBnW/2YRsKPUsy; AWSALBCORS=nc6fqskcK03/4P/jcyGD4W/f7LL3drKCZUJSO21dOWKUPmrp8R6qeNhc70hs04Cio5l3j47jEr++NS2U72jqJAB4ODI7qlWZd+nZCkXYDnlrm7UBnW/2YRsKPUsy"
+        );
 
-    var urlencoded = new URLSearchParams();
-    urlencoded.append("grant_type", "client_credentials");
+        var urlencoded = new URLSearchParams();
+        urlencoded.append("grant_type", "client_credentials");
+        urlencoded.append("client_id", "cdccab7e-8f00-4ea7-a345-7a76c08c383d");
+        urlencoded.append("client_secret", "b3680ccc4dcc14abf514eb72792846d4");
 
-    var requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: urlencoded,
-      redirect: "follow",
-    };
+        var requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: urlencoded,
+          redirect: "follow",
+        };
 
-    fetch("https://api.aspose.cloud/connect/token", requestOptions)
-      .then((response) => response.text())
-      .then((result) => console.log(result))
-      .catch((error) => console.log("error", error));
+        fetch("https://api.aspose.cloud/connect/token", requestOptions)
+          .then((response) => response.json())
+          .then((result) => {
+            console.log(result);
+
+            var token = result["access_token"];
+
+            fetch("https://api.aspose.cloud/v3.0/barcode/recognize", {
+              headers: {
+                accept: "application/json",
+                "accept-language": "en-US,en;q=0.9",
+                authorization: "Bearer " + token,
+              },
+              body: fd,
+              method: "POST",
+              mode: "cors",
+            }).then((res) => console.log(res));
+          })
+          .catch((error) => console.log("error", error));
+      });
   }
 
   // Capture a photo by fetching the current contents of the video
